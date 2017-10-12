@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Foody</string>
+    <string name="text">Food App\n
+    Version: 2.0.0\n
+    Created By TNS\n
+    Thank you for installing</string>
+    <string name="price">Price</string>
+    <string name="item">Item</string>
+    <string name="quantity">Quantity</string>
+    <string name="your_order">Your Order</string>
+    <string name="msg">Thank you For Ordering Have a Nice day\nVisit again</string>
+    <string-array name="drinks">
+        <item>Apple Cider</item>
+        <item>Peanut Punch</item>
+        <item>Shikanji</item>
+        <item>Ginger Tea</item>
+    </string-array>
+    <string-array name="desserts">
+        <item>Gulab Jamun</item>
+        <item>Rasgulla</item>
+        <item>Pinni</item>
+        <item>Bal Mithai</item>
+    </string-array>
+    <string-array name="snacks">
+        <item>Bhelpuri</item>
+        <item>Bonda</item>
+        <item>Dabeli</item>
+        <item>Dhokla</item>
+    </string-array>
+    <string-array name="items"></string-array>
+</resources>

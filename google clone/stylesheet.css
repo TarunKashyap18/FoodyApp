@@ -1,0 +1,146 @@
+a{
+	padding: 5px;
+	color: #000;
+	font-size: 0.9em;
+	text-decoration: none; 
+}
+
+li {
+  display: inline-block;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+header li:hover {
+  color: #666;
+  text-decoration: underline;
+}
+header nav { 
+    display: block; 
+  height: 30px; 
+  margin: 10px 0;
+  padding: 10px 10px 10px 10px; 
+}   
+header ul {
+  float: right;
+  list-style-type: none;
+  font-size: 14px;
+  text-align: right;
+  margin: 5px 0 0 0;
+  padding: 0;
+}
+header li {
+  display:inline-block;
+  float: left;
+  padding: 0 15px 0 6px;
+}
+
+.center { 
+    padding-top: 110px;
+    text-align: center;
+    margin: auto;
+    width: 40%;
+}
+.centers { 
+    padding-top: 20px;
+    text-align: center;
+    margin: auto;
+    width: 40%;
+}
+
+.apps{
+    height: 25px;
+    width: 25px;
+}
+.logo{
+	height: 100px; width: 300px
+    margin: auto;
+}
+#googletext{
+	color: #4285f4;
+    font: 16px/16px roboto-regular, arial, sans-serif;
+    position: relative;
+    white-space: nowrap;
+}
+.active{
+    margin-top: 0px;
+	background-color: #4285f4;
+	border-radius: 2px;
+	margin-right:  2em;
+    margin-top: -1em;
+	color: white;
+	text-decoration: none;
+	border: 1px solid #4285f4;
+    font-weight: bold;
+    display: inline-block;
+    line-height: 28px;
+    padding: 0 12px;
+}
+nav{
+	margin-top: 20px;
+}
+body {
+  background-color: white;
+  font-family: arial, sans-serif;
+  height: 100%;
+}
+html{
+	height: 100%;
+}
+.input{
+	height: 30px;
+	width: 500px;
+	font-size: 20px;
+}
+.input:hover{ 
+	border-color: rgba(0, 0, 0, 0.1)
+}
+.abc:hover{
+	text-decoration: underline;
+}
+button{
+	height: 36px;
+    line-height: 27px;
+    margin-top: 2em;
+    border: none;
+    color: #757575;
+    background-color: #f2f2f2;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 11px 4px;
+    min-width: 54px;
+    padding: 0 16px;
+    text-align: center;
+}
+
+.footer {
+  list-style-type: none;
+  font-size: 12px;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  background-color: #f2f2f2;
+  border-top: 1px solid #e4e4e4;
+  color: #666;
+  line-height: 40px;
+}
+.left_bar {
+  display: inline-block;
+  float: left;
+  font-size: 13px;
+}
+.right_bar {
+  display: inline-block;
+  float: right;
+  padding: 0 30px 5px 0;
+}
+.btn:hover{
+    border: 1px solid #f2f2f2;
+    background-color:white;
+    color: black;
+}
+.highlight{
+    color:blue;
+}
+.highlight:hover{
+    text-decoration: underline;
+}

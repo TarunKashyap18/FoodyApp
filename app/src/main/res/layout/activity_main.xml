@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scaleType="centerCrop"
+    android:background="@drawable/background1"
+    tools:context="com.example.tkashyap.foody.MainActivity">
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="addFunctionality"
+            android:text="Drinks"
+            android:layout_marginTop="81dp"
+            android:textSize="20sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:textColor="#ffffff"
+            android:layout_alignEnd="@+id/textView" />
+
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="addFunctionality"
+            android:text="Dessert"
+            android:textSize="20sp"
+            android:textColor="#ffffff"
+            android:layout_alignBaseline="@+id/checkBox"
+            android:layout_alignBottom="@+id/checkBox"
+            android:layout_centerHorizontal="true" />
+
+        <CheckBox
+            android:id="@+id/checkBox3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="addFunctionality"
+            android:text="Snacks    "
+            android:textSize="20sp"
+            android:layout_marginEnd="10dp"
+            android:textColor="#ffffff"
+            android:layout_alignBaseline="@+id/checkBox2"
+            android:layout_alignBottom="@+id/checkBox2"
+            android:layout_alignParentEnd="true" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="67dp"
+            android:background="@android:color/transparent"
+            android:layout_below="@+id/checkBox"
+            android:textColor="#ffffff"
+            android:layout_alignParentStart="true" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_alignTop="@+id/radioGroup2"
+                android:layout_centerHorizontal="true"
+                android:textColor="#ffffff"
+                android:layout_weight="1"
+                android:text="1" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_alignTop="@+id/radioGroup2"
+                android:layout_centerHorizontal="true"
+                android:textColor="#ffffff"
+                android:layout_weight="1"
+                android:text="2" />
+
+            <RadioButton
+                android:id="@+id/radioButton3"
+                android:layout_width="wrap_content"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="3" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="Quantity"
+            android:textSize="22dp"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/spinner"
+            android:layout_alignEnd="@+id/button3" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/radioGroup"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:background="@android:color/transparent"
+            android:layout_marginTop="37dp"
+            android:text="   Order   " />
+
+
+
+
+
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/button3"
+            android:layout_marginTop="26dp"
+            android:textColor="#ffffff"
+            android:textSize="21sp"
+            android:scrollbars="vertical"
+            android:text="" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:background="@android:color/transparent"
+            android:text="Add to List   "
+            android:layout_above="@+id/textView2"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="clear"
+            android:text="clear List      "
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            android:textColor="#ffffff"
+            android:background="@android:color/transparent"
+            android:layout_above="@+id/textView2"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
