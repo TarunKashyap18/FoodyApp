@@ -10,22 +10,36 @@
     <string name="your_order">Your Order</string>
     <string name="msg">Thank you For Ordering Have a Nice day\nVisit again</string>
     <string-array name="drinks">
+        <item>Select Items</item>
         <item>Apple Cider</item>
         <item>Peanut Punch</item>
         <item>Shikanji</item>
         <item>Ginger Tea</item>
     </string-array>
     <string-array name="desserts">
+        <item>Select Items</item>
         <item>Gulab Jamun</item>
         <item>Rasgulla</item>
         <item>Pinni</item>
         <item>Bal Mithai</item>
     </string-array>
     <string-array name="snacks">
+        <item>Select Items</item>
         <item>Bhelpuri</item>
         <item>Bonda</item>
         <item>Dabeli</item>
         <item>Dhokla</item>
     </string-array>
     <string-array name="items"></string-array>
+    <string-array name="Quantity">
+        <item>Select the Quantity</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
 </resources>

@@ -8,33 +8,37 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     CheckBox dessert, drink, snack;
-    RadioButton rb1 ,rb2,rb3;
-    RadioGroup rg;
-    Spinner spin;
+    Spinner spin,spin2;
     Button order,cart;
+    ListView lv;
     TextView tv,tvResult;
     int totalAmount=0;
     String str ;
     String selected;
-    int c=0;
+    String  quantity = "0";
+    int price = 0;
+    int c=0,flag=0;
+    int p=1,tp=0;
+
+    final List<String> selectedItemL = new ArrayList<String>();
+    final List<String> priceL = new ArrayList<String>();
+    final List<String> totalAmountL = new ArrayList<String>();
+    final List<String> quantityL = new ArrayList<String>();
+
     ArrayList<String> item = new ArrayList<String>();
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -84,48 +88,72 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        list=null;
+//        price=totalAmount=0;
+//        quantity = "0";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         spin = (Spinner) findViewById(R.id.spinner);
+        spin2 = (Spinner) findViewById(R.id.spinner2);
         addingListeners();
         disableItem();
-        cart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(str == null )
-                    Toast.makeText(getApplicationContext(),"\tYou have not selected any item yet ",Toast.LENGTH_SHORT).show();
-                else {
-                    tvResult.setText("\tSelected Item's list \n" + str);
-                }
-            }
-        });
-        order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(str.equals(null) || item.equals( null) )
-                    Toast.makeText(getApplicationContext(),"You have not selected any item yet ",Toast.LENGTH_SHORT).show();
-                else if(c<1) {
-                    if(totalAmount != 0){
-                        String result = "\tTotal amount to be paid : "+totalAmount;
-                        item.add(result);
-//                        ArrayAdapter listItem = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_list_item_1,item);
-                        c++;
-                        Intent i = new Intent(getApplicationContext(),order.class);
-                        i.putStringArrayListExtra("item",item);
-                        startActivity(i);
-                        item.clear();
+            cart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(flag>0) {
+                        c = 0;
+                        if (!selected.equals("Select Items") && Integer.parseInt(quantity) != 0) {
+                            selectedItemL.add(selected);
+                            quantityL.add(quantity);
+                            priceL.add(String.valueOf(price));
+                            totalAmountL.add(String.valueOf(totalAmount));
+                            tp += Integer.parseInt(quantity) * price;
+                            String result = tvResult.getText() + "\nItem : " + selected + " " + " Quantity : " + quantity;
+                            tvResult.setText(result);
+                        }
+                        if (selected.equals("Select Items"))
+                            Toast.makeText(getApplicationContext(), "You have not selected any item yet ", Toast.LENGTH_SHORT).show();
+                        if (Integer.parseInt(quantity) == 0)
+                            if(!selected.equals("Select Items"))
+                                Toast.makeText(getApplicationContext(), "Please Select the quantity of " + selected, Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
-        });
+            });
+            order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(flag>0) {
+                        if (selected.equals("Select Items") || Integer.parseInt(quantity) == 0)
+                            Toast.makeText(getApplicationContext(), "You have not selected any item yet ", Toast.LENGTH_SHORT).show();
+                        if (c < 1) {
+                            if (tp != 0) {
+                                c++;
+                                String[] selectedA = new String[selectedItemL.size()];
+                                String[] priceA = new String[priceL.size()];
+                                String[] totalAmountA = new String[totalAmountL.size()];
+                                String[] quantityA = new String[quantityL.size()];
+                                selectedA = selectedItemL.toArray(selectedA);
+                                priceA = priceL.toArray(priceA);
+                                totalAmountA = totalAmountL.toArray(totalAmountA);
+                                quantityA = quantityL.toArray(quantityA);
+                                Intent i = new Intent(getApplicationContext(), order.class);
+                                Bundle b = new Bundle();
+                                b.putStringArray("item", selectedA);
+                                b.putStringArray("price", priceA);
+                                b.putStringArray("totalAmount", totalAmountA);
+                                b.putStringArray("quantity", quantityA);
+                                i.putExtras(b);
+                                i.putExtra("tp", String.valueOf(tp));
+                                startActivity(i);
+                            }
+                        }
+                    }
+                }
+            });
     }
 
     private void disableItem() {
         spin.setVisibility(View.GONE);
-        rb1.setVisibility(View.GONE);
-        rb2.setVisibility(View.GONE);
-        rb3.setVisibility(View.GONE);
+        spin2.setVisibility(View.GONE);
         tv.setVisibility(View.GONE);
     }
 
@@ -133,44 +161,47 @@ public class MainActivity extends AppCompatActivity {
         drink = (CheckBox) findViewById(R.id.checkBox);
         dessert = (CheckBox) findViewById(R.id.checkBox2);
         snack = (CheckBox) findViewById(R.id.checkBox3);
-        rb1 =(RadioButton) findViewById(R.id.radioButton1);
-        rb2 =(RadioButton) findViewById(R.id.radioButton2);
-        rb3 =(RadioButton) findViewById(R.id.radioButton3);
-        rg =(RadioGroup) findViewById(R.id.radioGroup);
         tv = (TextView) findViewById(R.id.textView);
         tvResult = (TextView) findViewById(R.id.textView2);
         order = (Button) findViewById(R.id.button3);
+        lv = (ListView) findViewById(R.id.lv1);
         cart = (Button) findViewById(R.id.button);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Quantity,R.layout.custom_spinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spin2.setAdapter(adapter);
+        spin2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                quantity =adapterView.getItemAtPosition(i).toString();
+                if(quantity.equals("Select the Quantity"))
+                    quantity = "0";;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                quantity = "0";
+            }
+        });
     }
     public void setVisible(){
-        rb1.setVisibility(View.VISIBLE);
-        rb2.setVisibility(View.VISIBLE);
-        rb3.setVisibility(View.VISIBLE);
+        flag =2;
         tv.setVisibility(View.VISIBLE);
-    }
-
-    public void resetRadioButton(){
-        rg.clearCheck();
+        spin2.setVisibility(View.VISIBLE);
+        spin.setVisibility(View.VISIBLE);
     }
 
     public void addFunctionality(View view) {
+        flag =2;
+//        Toast.makeText(this,String.valueOf(flag),Toast.LENGTH_SHORT).show();
         if(drink.isChecked()) {
-            spin.setVisibility(View.VISIBLE);
+            flag =2;
             setVisible();
-            String snk = Arrays.toString(getResources().getStringArray(R.array.drinks));
-            Toast.makeText(getApplicationContext(),snk,Toast.LENGTH_LONG).show();
-            Toast.makeText(getApplicationContext(),"Please select the quantity first",Toast.LENGTH_SHORT).show();
             if(drink.isChecked()&&(snack.isChecked()||dessert.isChecked())){
                 if(snack.isChecked())
                     snack.toggle();
-                else if(dessert.isChecked())
+                if(dessert.isChecked())
                     dessert.toggle();
-                else {
-                    dessert.toggle();
-                    snack.toggle();
-                }
             }
-            resetRadioButton();
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.drinks,R.layout.custom_spinner);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spin.setAdapter(adapter);
@@ -179,125 +210,44 @@ public class MainActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     selected  = adapterView.getItemAtPosition(i).toString();
                     if(selected.equals("Apple Cider")) {
+                        price =30;
                         setVisible();
-                        int q = rg.getCheckedRadioButtonId();
-                        if(str == null){
-                            str="";
-                        }
-                        if (R.id.radioButton1 == q) {
-                            str += "\t" + selected + " -> " + 1;
-                            totalAmount += 10;
-                            item.add("\t" + 1 + selected );
-                        }
-                        if (R.id.radioButton2 == q) {
-                            str += "\t" + selected + " -> " + 2;
-                            totalAmount += 20;
-                            item.add("\t" + 2 + selected );
-                        }
-                        if (R.id.radioButton3 == q) {
-                            str += "\t" + selected + " -> " + 3;
-                            totalAmount += 30;
-                            item.add( "\t" + 3 + selected );
-                        }
+//                        Toast.makeText(getApplicationContext(),quantity,Toast.LENGTH_SHORT).show();
+                        totalAmount = Integer.parseInt(quantity)*price;
                     }
                     if(selected.equals("Peanut Punch")) {
                         setVisible();
-                        int q = rg.getCheckedRadioButtonId();
-                        if(str == null){
-                            str="";
-                        }
-                        if (R.id.radioButton1 == q) {
-                            str += "\t" + selected + " -> " + 1;
-                            totalAmount += 10;
-                            item.add("\t" + 1 + selected);
-                        }
-                        if (R.id.radioButton2 == q) {
-                            str += "\t" + selected + " -> " + 2;
-                            totalAmount += 20;
-                            item.add("\t" + 2 + selected);
-                        }
-                        if (R.id.radioButton3 == q) {
-                            str += "\t" + selected + " -> " + 3;
-                            totalAmount += 30;
-                            item.add("\t" + 3 + selected);
-                        }
+                        price =30;
+                        totalAmount = Integer.parseInt(quantity)*price;
                     }
                     if(selected.equals("Shikanji")) {
                         setVisible();
-
-                        int q = rg.getCheckedRadioButtonId();
-                        if(str == null){
-                            str="";
-                        }
-                        if (R.id.radioButton1 == q) {
-                            str += "\t" + selected + " -> " + 1;
-                            totalAmount += 10;
-                            item.add("\t" + 1 + selected);
-                        }
-                        if (R.id.radioButton2 == q) {
-                            str += "\t" + selected + " -> " + 2;
-                            totalAmount += 20;
-                            item.add("\t" + 2 + selected);
-                        }
-                        if (R.id.radioButton3 == q) {
-                            str += "\t" + selected + " -> " + 3;
-                            totalAmount += 30;
-                            item.add("\t" + 3 + selected);
-                        }
+                        price=20;
+                        totalAmount = Integer.parseInt(quantity)*price;
                     }
                     if(selected .equals("Ginger Tea")) {
                         setVisible();
-                        int q = rg.getCheckedRadioButtonId();
-                        if(str == null){
-                            str="";
-                        }
-                        if (R.id.radioButton1 == q) {
-                            str += "\t" + selected + " -> " + 1;
-                            totalAmount += 10;
-                            item.add("\t" + 1 + selected);
-                        }
-                        if (R.id.radioButton2 == q) {
-                            str += "\t" + selected + " -> " + 2;
-                            totalAmount += 20;
-                            item.add("\t" + 2 + selected);
-                        }
-                        if (R.id.radioButton3 == q) {
-                            str += "\t" + selected + " -> " + 3;
-                            totalAmount += 30;
-                            item.add("\t" + 3 + selected);
-                        }
+                        price=20;
+                        totalAmount = Integer.parseInt(quantity)*price;
                     }
-                    if(str == ""){
-//                        tvResult.setText("Error in adding Item in List");
-                    }
-//                    else
-//                    Toast.makeText(getApplicationContext(),selected,Toast.LENGTH_SHORT).show();
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
-
+                    selected = "Nothing is Selected";
                 }
             });
         }
+
         if(dessert.isChecked()) {
-            spin.setVisibility(View.VISIBLE);
+            flag =2;
             setVisible();
-            String snk = Arrays.toString(getResources().getStringArray(R.array.desserts));
-            Toast.makeText(getApplicationContext(),snk,Toast.LENGTH_LONG).show();
-            Toast.makeText(getApplicationContext(),"Please select the quantity first",Toast.LENGTH_SHORT).show();
-            if(dessert.isChecked()&&(drink.isChecked()||snack.isChecked())){
+            if(dessert.isChecked()&&(snack.isChecked()||drink.isChecked())){
+                if(snack.isChecked())
+                    snack.toggle();
                 if(drink.isChecked())
                     drink.toggle();
-                else if(snack.isChecked())
-                    snack.toggle();
-                else {
-                    snack.toggle();
-                    drink.toggle();
-                }
             }
-
-            resetRadioButton();
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.desserts, R.layout.custom_spinner);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.desserts,R.layout.custom_spinner);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spin.setAdapter(adapter);
             spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -305,125 +255,43 @@ public class MainActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     selected  = adapterView.getItemAtPosition(i).toString();
                     if(selected.equals("Gulab Jamun")) {
+                        price =30;
                         setVisible();
-                        int q = rg.getCheckedRadioButtonId();
-                        if(str == null){
-                            str="";
-                        }
-                        if (R.id.radioButton1 == q) {
-                            str += "\t" + selected + " -> " + 1;
-                            totalAmount += 10;
-                            item.add("\t" + 1 + selected);
-                        }
-                        if (R.id.radioButton2 == q) {
-                            str += "\t" + selected + " -> " + 2;
-                            totalAmount += 20;
-                            item.add("\t" + 2 + selected);
-                        }
-                        if (R.id.radioButton3 == q) {
-                            str += "\t" + selected + " -> " + 3;
-                            totalAmount += 30;
-                            item.add("\t" + 3 + selected);
-                        }
+                        totalAmount = Integer.parseInt(quantity)*price;
                     }
                     if(selected.equals("Rasgulla")) {
                         setVisible();
-                        int q = rg.getCheckedRadioButtonId();
-                        if(str == null){
-                            str="";
-                        }
-                        if (R.id.radioButton1 == q) {
-                            str += "\t" + selected + " -> " + 1;
-                            totalAmount += 10;
-                            item.add("\t" + 1 + selected);
-                        }
-                        if (R.id.radioButton2 == q) {
-                            str += "\t" + selected + " -> " + 2;
-                            totalAmount += 20;
-                            item.add("\t" + 2 + selected);
-                        }
-                        if (R.id.radioButton3 == q) {
-                            str += "\t" + selected + " -> " + 3;
-                            totalAmount += 30;
-                            item.add("\t" + 3 + selected);
-                        }
+                        price =30;
+                        totalAmount = Integer.parseInt(quantity)*price;
                     }
                     if(selected.equals("Pinni")) {
                         setVisible();
-                        int q = rg.getCheckedRadioButtonId();
-                        if(str == null){
-                            str="";
-                        }
-                        if (R.id.radioButton1 == q) {
-                            str += "\t" + selected + " -> " + 1;
-                            totalAmount += 10;
-                            item.add("\t" + 1 + selected);
-                        }
-                        if (R.id.radioButton2 == q) {
-                            str += "\t" + selected + " -> " + 2;
-                            totalAmount += 20;
-                            item.add("\t" + 2 + selected);
-                        }
-                        if (R.id.radioButton3 == q) {
-
-                            str += "\t" + selected + " -> " + 3;
-                            totalAmount += 30;
-                            item.add("\t" + 3 + selected);
-                        }
+                        price=20;
+                        totalAmount = Integer.parseInt(quantity)*price;
                     }
                     if(selected .equals("Bal Mithai")) {
                         setVisible();
-                        int q = rg.getCheckedRadioButtonId();
-                        if(str == null){
-                            str="";
-                        }
-                        if (R.id.radioButton1 == q) {
-                            str += "\t" + selected + " -> " + 1;
-                            totalAmount += 10;
-                            item.add("\t" + 1 + selected);
-                        }
-                        if (R.id.radioButton2 == q) {
-                            str += "\t" + selected + " -> " + 2;
-                            totalAmount += 20;
-                            item.add("\t" + 2 + selected);
-                        }
-                        if (R.id.radioButton3 == q) {
-                            str += "\t" + selected + " -> " + 3;
-                            totalAmount += 30;
-                            item.add("\t" + 3 + selected);
-                        }
+                        price=20;
+                        totalAmount = Integer.parseInt(quantity)*price;
                     }
-//                    if(str == null){
-//                        tvResult.setText("Error in adding Item in List");
-//                    }
-//                    else
-//                    Toast.makeText(getApplicationContext(),selected,Toast.LENGTH_SHORT).show();
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
+                    selected = "Nothing is Selected";
                 }
             });
-
         }
-        if(snack.isChecked()) {
-            spin.setVisibility(View.VISIBLE);
-            setVisible();
-            String snk = Arrays.toString(getResources().getStringArray(R.array.snacks));
-            Toast.makeText(getApplicationContext(),snk,Toast.LENGTH_LONG).show();
-            Toast.makeText(getApplicationContext(),"Please select the quantity first",Toast.LENGTH_SHORT).show();
 
+        if(snack.isChecked()) {
+            flag =2;
+            setVisible();
             if(snack.isChecked()&&(drink.isChecked()||dessert.isChecked())){
                 if(drink.isChecked())
                     drink.toggle();
-                else if(dessert.isChecked())
+                if(dessert.isChecked())
                     dessert.toggle();
-                else {
-                    dessert.toggle();
-                    drink.toggle();
-                }
             }
-            resetRadioButton();
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.snacks, R.layout.custom_spinner);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.snacks,R.layout.custom_spinner);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spin.setAdapter(adapter);
             spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -431,103 +299,29 @@ public class MainActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     selected  = adapterView.getItemAtPosition(i).toString();
                     if(selected.equals("Bhelpuri")) {
+                        price =30;
                         setVisible();
-                        int q = rg.getCheckedRadioButtonId();
-                        if(str == null){
-                            str="";
-                        }
-                        if (R.id.radioButton1 == q) {
-                            str += "\t" + selected + " -> " + 1;
-                            totalAmount += 10;
-                            item.add("\t" + 1 + selected);
-                        }
-                        if (R.id.radioButton2 == q) {
-                            str += "\t" + selected + " -> " + 2;
-                            totalAmount += 20;
-                            item.add("\t" + 2 + selected);
-                        }
-                        if (R.id.radioButton3 == q) {
-                            str += "\t" + selected + " -> " + 3;
-                            totalAmount += 30;
-                            item.add("\t" + 3 + selected);
-                        }
+                        totalAmount = Integer.parseInt(quantity)*price;
                     }
                     if(selected.equals("Bonda")) {
                         setVisible();
-                        int q = rg.getCheckedRadioButtonId();
-                        if(str == null){
-                            str="";
-                        }
-                        if (R.id.radioButton1 == q) {
-                            str += "\t" + selected + " -> " + 1;
-                            totalAmount += 10;
-                            item.add("\t" + 1 + selected);
-                        }
-                        if (R.id.radioButton2 == q) {
-                            str += "\t" + selected + " -> " + 2;
-                            totalAmount += 20;
-                            item.add("\t" + 2 + selected);
-                        }
-                        if (R.id.radioButton3 == q) {
-                            str += "\t" + selected + " -> " + 3;
-                            totalAmount += 30;
-                            item.add("\t" + 3 + selected);
-                        }
+                        price =30;
+                        totalAmount = Integer.parseInt(quantity)*price;
                     }
                     if(selected.equals("Dabeli")) {
                         setVisible();
-
-                        int q = rg.getCheckedRadioButtonId();
-                        if(str == null){
-                            str="";
-                        }
-                        if (R.id.radioButton1 == q) {
-                            str += "\t" + selected + " -> " + 1;
-                            totalAmount += 10;
-                            item.add("\t" + 1 + selected);
-                        }
-                        if (R.id.radioButton2 == q) {
-                            str += "\t" + selected + " -> " + 2;
-                            totalAmount += 20;
-                            item.add("\t" + 2 + selected);
-                        }
-                        if (R.id.radioButton3 == q) {
-                            str += "\t" + selected + " -> " + 3;
-                            totalAmount += 30;
-                            item.add("\t" + 3 + selected);
-                        }
+                        price=20;
+                        totalAmount = Integer.parseInt(quantity)*price;
                     }
                     if(selected .equals("Dhokla")) {
                         setVisible();
-                        int q = rg.getCheckedRadioButtonId();
-                        if(str == null){
-                            str="";
-                        }
-                        if (R.id.radioButton1 == q) {
-                            str += "\t" + selected + " -> " + 1;
-                            totalAmount += 10;
-                            item.add("\t" + 1 + selected);
-                        }
-                        if (R.id.radioButton2 == q) {
-                            str += "\t" + selected + " -> " + 2;
-                            totalAmount += 20;
-                            item.add("\t" + 2 + selected);
-                        }
-                        if (R.id.radioButton3 == q) {
-                            str += "\t" + selected + " -> " + 3;
-                            totalAmount += 30;
-                            item.add("\t" + 3 + selected);
-                        }
+                        price=20;
+                        totalAmount = Integer.parseInt(quantity)*price;
                     }
-//                    if(str == null){
-//                        tvResult.setText("Error in adding Item in List");
-//                    }
-//                    else
-////                        list.append(str);
-//                    Toast.makeText(getApplicationContext(),selected,Toast.LENGTH_SHORT).show();
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
+                    selected = "Nothing is Selected";
                 }
             });
         }
@@ -537,14 +331,17 @@ public class MainActivity extends AppCompatActivity {
         str="";
         Toast.makeText(getApplicationContext(),"List is Emapty Now",Toast.LENGTH_SHORT).show();
         tvResult.setText("");
-        resetRadioButton();
         totalAmount=0;
         c=0;
-
-        //item.clear();
         disableItem();
         drink.setChecked(false);
         snack.setChecked(false);
         dessert.setChecked(false);
+        selectedItemL.clear();
+        priceL.clear();
+        totalAmountL.clear();
+        quantityL.clear();
+        tp=0;
+        flag=0;
     }
 }

@@ -13,10 +13,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class order extends AppCompatActivity {
+    ListView lv;
+    TextView tv;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -67,26 +71,17 @@ public class order extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
-        Intent i=getIntent();
-        ArrayList items = i.getStringArrayListExtra("item");
-        ListView listItems = (ListView) findViewById(R.id.lv);
-        ArrayAdapter listItemAdapter = new ArrayAdapter(getApplicationContext(),android.R.layout.test_list_item,items){
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent){
-                // Get the Item from ListView
-                View view = super.getView(position, convertView, parent);
+        lv = (ListView) findViewById(R.id.lv1);
+        tv = (TextView) findViewById(R.id.textView);
 
-                // Initialize a TextView for ListView each Item
-                TextView tv = (TextView) view.findViewById(android.R.id.text1);
-
-                // Set the text color of TextView (ListView Item)
-                tv.setTextColor(Color.BLACK);
-                tv.setTextSize(20);
-
-                // Generate ListView Item using TextView
-                return view;
-            }
-        };
-        listItems.setAdapter(listItemAdapter);
+        Bundle b=this.getIntent().getExtras();
+        String[] selectedA=b.getStringArray("item");
+        String[] priceA=b.getStringArray("price");
+        String[] totalAmountA=b.getStringArray("totalAmount");
+        String[] quantityA=b.getStringArray("quantity");
+        String tp =this.getIntent().getExtras().getString("tp");
+        tv.setText("Total Amount to be paid : "+tp);
+        MyAdapter adapter = new MyAdapter(order.this,selectedA,priceA,totalAmountA,quantityA);
+        lv.setAdapter(adapter);
     }
 }

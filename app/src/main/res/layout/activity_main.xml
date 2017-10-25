@@ -7,16 +7,16 @@
     android:scaleType="centerCrop"
     android:background="@drawable/background1"
     tools:context="com.example.tkashyap.foody.MainActivity">
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+    <!--<ScrollView-->
+        <!--android:id="@+id/scrollView2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignParentStart="true">-->
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <!--<RelativeLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content">-->
 
         <CheckBox
             android:id="@+id/checkBox"
@@ -24,12 +24,11 @@
             android:layout_height="wrap_content"
             android:onClick="addFunctionality"
             android:text="Drinks"
-            android:layout_marginTop="81dp"
+            android:layout_marginTop="82dp"
             android:textSize="20sp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
             android:textColor="#ffffff"
-            android:layout_alignEnd="@+id/textView" />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
 
         <CheckBox
             android:id="@+id/checkBox2"
@@ -66,73 +65,28 @@
             android:textColor="#ffffff"
             android:layout_alignParentStart="true" />
 
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/radioButton1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_alignTop="@+id/radioGroup2"
-                android:layout_centerHorizontal="true"
-                android:textColor="#ffffff"
-                android:layout_weight="1"
-                android:text="1" />
-
-            <RadioButton
-                android:id="@+id/radioButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_alignTop="@+id/radioGroup2"
-                android:layout_centerHorizontal="true"
-                android:textColor="#ffffff"
-                android:layout_weight="1"
-                android:text="2" />
-
-            <RadioButton
-                android:id="@+id/radioButton3"
-                android:layout_width="wrap_content"
-                android:textColor="#ffffff"
-                android:textSize="20sp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="3" />
-
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:text="Quantity"
-            android:textSize="22dp"
-            android:textColor="#ffffff"
-            android:layout_below="@+id/spinner"
-            android:layout_alignEnd="@+id/button3" />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/spinner"
+        android:layout_marginTop="38dp"
+        android:text="   Quantity"
+        android:textColor="#ffffff"
+        android:textSize="22dp" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/radioGroup"
             android:textColor="#ffffff"
             android:textSize="20sp"
             android:background="@android:color/transparent"
-            android:layout_marginTop="37dp"
-            android:text="   Order   " />
-
-
-
-
+            android:text="   Order   "
+            android:layout_marginTop="36dp"
+            android:layout_below="@+id/textView"
+            android:layout_alignParentStart="true" />
 
 
         <TextView
@@ -140,13 +94,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
             android:layout_below="@+id/button3"
             android:layout_marginTop="26dp"
-            android:textColor="#ffffff"
-            android:textSize="21sp"
+            android:paddingLeft="17sp"
             android:scrollbars="vertical"
-            android:text="" />
+            android:textColor="#ffffff"
+            android:textSize="21sp" />
 
         <Button
             android:id="@+id/button"
@@ -172,7 +125,17 @@
             android:layout_above="@+id/textView2"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"/>
-    </RelativeLayout>
-    </ScrollView>
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView"
+        android:layout_alignStart="@+id/checkBox2"
+        android:layout_marginStart="11dp"
+        android:layout_alignTop="@+id/textView" />
+        <!--</RelativeLayout>-->
+    <!--</ScrollView>-->
+
 
 </RelativeLayout>
