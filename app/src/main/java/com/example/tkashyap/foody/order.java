@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.SQLTransactionRollbackException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,5 +84,10 @@ public class order extends AppCompatActivity {
         tv.setText("Total Amount to be paid : "+tp);
         MyAdapter adapter = new MyAdapter(order.this,selectedA,priceA,totalAmountA,quantityA);
         lv.setAdapter(adapter);
+    }
+
+    public void payment(View view) {
+        Intent i = new Intent(this,Payment.class);
+        startActivity(i);
     }
 }
